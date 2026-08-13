@@ -1,0 +1,156 @@
+{
+  "architecture": "torchvision ConvNeXt-Tiny; fresh FER head; ImageNet-1K V1 initialization",
+  "data": "original real FER2013 only for train/validation/test; frozen face_deep_split.json",
+  "selection": "highest validation Macro F1 checkpoint; test evaluated once after selection",
+  "epochs_completed": 25,
+  "stopped_early": true,
+  "best_epoch": 22,
+  "best_validation_accuracy": 0.687645146307478,
+  "best_validation_macro_f1": 0.6799339209216735,
+  "best_validation_weighted_f1": 0.6861307100374703,
+  "best_checkpoint_validation_evaluation": {
+    "loss": 1.189278013031814,
+    "accuracy": 0.687645146307478,
+    "macro_f1": 0.6799339209216735,
+    "weighted_f1": 0.6861307100374703,
+    "per_class": {
+      "Angry": {
+        "precision": 0.6533333333333333,
+        "recall": 0.5726210350584308,
+        "f1": 0.6103202846975089,
+        "support": 599,
+        "predicted_count": 525
+      },
+      "Disgust": {
+        "precision": 0.8461538461538461,
+        "recall": 0.6666666666666666,
+        "f1": 0.7457627118644068,
+        "support": 66,
+        "predicted_count": 52
+      },
+      "Fear": {
+        "precision": 0.5376532399299475,
+        "recall": 0.5,
+        "f1": 0.5181434599156118,
+        "support": 614,
+        "predicted_count": 571
+      },
+      "Happy": {
+        "precision": 0.87,
+        "recall": 0.8844731977818854,
+        "f1": 0.8771769019248395,
+        "support": 1082,
+        "predicted_count": 1100
+      },
+      "Neutral": {
+        "precision": 0.6247002398081535,
+        "recall": 0.6993288590604027,
+        "f1": 0.6599113362887904,
+        "support": 745,
+        "predicted_count": 834
+      },
+      "Sad": {
+        "precision": 0.5564625850340136,
+        "recall": 0.5649171270718232,
+        "f1": 0.5606579849211789,
+        "support": 724,
+        "predicted_count": 735
+      },
+      "Surprise": {
+        "precision": 0.7770961145194274,
+        "recall": 0.7983193277310925,
+        "f1": 0.7875647668393783,
+        "support": 476,
+        "predicted_count": 489
+      }
+    }
+  },
+  "test_loss": 1.1745484102234531,
+  "test_accuracy": 0.6895751102855816,
+  "test_macro_precision": 0.696124653053962,
+  "test_macro_recall": 0.6774803960581371,
+  "test_macro_f1": 0.6852434919557613,
+  "test_weighted_precision": 0.6882033384536875,
+  "test_weighted_recall": 0.6895751102855816,
+  "test_weighted_f1": 0.6877526451973559,
+  "test_macro_roc_auc_ovr": 0.9102756250095086,
+  "test_weighted_roc_auc_ovr": 0.9107987770756121,
+  "per_class": {
+    "Angry": {
+      "precision": 0.6377358490566037,
+      "recall": 0.5642737896494157,
+      "f1": 0.5987599645704162,
+      "support": 599,
+      "roc_auc": 0.8742240303418318,
+      "average_precision": 0.6444043162800349
+    },
+    "Disgust": {
+      "precision": 0.8392857142857143,
+      "recall": 0.7230769230769231,
+      "f1": 0.7768595041322314,
+      "support": 65,
+      "roc_auc": 0.934994378558735,
+      "average_precision": 0.7767470808141256
+    },
+    "Fear": {
+      "precision": 0.5540540540540541,
+      "recall": 0.5333333333333333,
+      "f1": 0.5434962717481359,
+      "support": 615,
+      "roc_auc": 0.8595691409243453,
+      "average_precision": 0.6052210274879614
+    },
+    "Happy": {
+      "precision": 0.8549686660698299,
+      "recall": 0.8818097876269622,
+      "f1": 0.8681818181818182,
+      "support": 1083,
+      "roc_auc": 0.9683604212634237,
+      "average_precision": 0.9251763761060058
+    },
+    "Neutral": {
+      "precision": 0.6135040745052387,
+      "recall": 0.7073825503355705,
+      "f1": 0.6571072319201995,
+      "support": 745,
+      "roc_auc": 0.903878184716376,
+      "average_precision": 0.6961093908224086
+    },
+    "Sad": {
+      "precision": 0.6058823529411764,
+      "recall": 0.5682758620689655,
+      "f1": 0.5864768683274021,
+      "support": 725,
+      "roc_auc": 0.8717514776949884,
+      "average_precision": 0.6084628082608673
+    },
+    "Surprise": {
+      "precision": 0.7674418604651163,
+      "recall": 0.7642105263157895,
+      "f1": 0.7658227848101266,
+      "support": 475,
+      "roc_auc": 0.9591517415668607,
+      "average_precision": 0.8323587731743739
+    }
+  },
+  "weakest_class": "Fear",
+  "most_confused_pair": {
+    "true_label": "Sad",
+    "predicted_label": "Neutral",
+    "count": 126
+  },
+  "diagnosis": "SEVERE OVERFITTING",
+  "diagnosis_evidence": {
+    "accuracy_gap_at_best": 0.20526886643137554,
+    "macro_f1_gap_at_best": 0.21889389671167636,
+    "maximum_post_best_val_macro_f1_drop": 0.01558270376771953
+  },
+  "checkpoint": "excluded-local-artifact",
+  "metrics_directory": "excluded-local-artifact",
+  "plots_directory": "excluded-local-artifact",
+  "split_sizes": {
+    "train": 20096,
+    "validation": 4306,
+    "test": 4307
+  }
+}

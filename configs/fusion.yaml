@@ -1,0 +1,10 @@
+face_embedding_dim: 256
+speech_embedding_dim: 256
+numerical_embedding_dim: 128
+alignment: weak_class_conditional
+alignment_probabilities: {same: 0.70, adjacent: 0.20, conflicting: 0.10}
+participant_paired: false
+classification_loss: cross_entropy
+regression_loss: smooth_l1
+regression_weight: 0.3
+modality_dropout: 0.12

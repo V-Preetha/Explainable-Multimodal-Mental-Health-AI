@@ -1,0 +1,16 @@
+model: convnext_tiny
+initialization: torchvision_imagenet1k_v1
+classes: [Angry, Disgust, Fear, Happy, Neutral, Sad, Surprise]
+image_size: 160
+batch_size: 64
+max_epochs: 60
+early_stopping_patience: 10
+checkpoint_metric: validation_macro_f1
+optimizer: adamw
+backbone_lr: 2.0e-5
+head_lr: 3.0e-4
+weight_decay: 5.0e-4
+scheduler: cosine_annealing
+scheduler_horizon: 60
+seed: 42
+training_data: original_fer2013_only

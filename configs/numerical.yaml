@@ -1,0 +1,6 @@
+original_features: 18
+status_classes: [Healthy, Mild_Stress, Moderate_Stress, Severe_Stress]
+regression_targets: [Depression_Score, Anxiety_Score, Stress_Score]
+synthetic_rows: 20000
+seed: 42
+report_evaluation_domains_separately: true

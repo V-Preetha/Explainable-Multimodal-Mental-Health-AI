@@ -1,0 +1,55 @@
+{
+  "single_feature_threshold": 0.8,
+  "flags": {
+    "any_feature_above_threshold": false,
+    "strongest_single_feature": "Overall_Behavioral_Disruption_Index",
+    "strongest_single_feature_accuracy": 0.6517000000000001,
+    "shuffle_label_accuracy": 0.2501,
+    "chance_accuracy": 0.25,
+    "shuffle_label_collapsed_to_chance": true
+  },
+  "top_5_correlated_with_status": [
+    {
+      "feature": "Overall_Behavioral_Disruption_Index",
+      "corr_status": 0.8541189891975873
+    },
+    {
+      "feature": "Autonomic_Arousal_Index",
+      "corr_status": 0.8526123073787409
+    },
+    {
+      "feature": "Facial_Arousal_Index",
+      "corr_status": 0.8066444287301753
+    },
+    {
+      "feature": "Negative_Expression_Index",
+      "corr_status": 0.8011199325441405
+    },
+    {
+      "feature": "Speech_Instability_Index",
+      "corr_status": 0.7835790489949627
+    }
+  ],
+  "top_5_by_single_feature_accuracy": [
+    {
+      "feature": "Overall_Behavioral_Disruption_Index",
+      "single_feature_best_accuracy": 0.6517000000000001
+    },
+    {
+      "feature": "Autonomic_Arousal_Index",
+      "single_feature_best_accuracy": 0.64755
+    },
+    {
+      "feature": "Facial_Arousal_Index",
+      "single_feature_best_accuracy": 0.5957000000000001
+    },
+    {
+      "feature": "Negative_Expression_Index",
+      "single_feature_best_accuracy": 0.5907
+    },
+    {
+      "feature": "HR_HRV_Ratio",
+      "single_feature_best_accuracy": 0.576
+    }
+  ]
+}

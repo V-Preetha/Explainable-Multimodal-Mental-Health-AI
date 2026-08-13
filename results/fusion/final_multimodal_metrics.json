@@ -1,0 +1,1547 @@
+{
+  "architecture": {
+    "face_encoder": "ConvNeXt-Tiny (torchvision, ImageNet1K-pretrained) embedding 256D",
+    "speech_encoder": "emotion2vec+ frozen encoder + attentive statistics pooling 256D",
+    "numerical_encoder": "18->64->128 grouped MLP 128D",
+    "fusion": "gated modality attention (256D projections) -> shared trunk 256->128",
+    "heads": "4-class status + 3-target normalized regression"
+  },
+  "alignment": "weakly supervised class-conditional probabilistic: 70% same stress category / 20% adjacent / 10% conflicting; never participant-paired",
+  "classification_loss": "CrossEntropy",
+  "regression_loss": "0.3 x SmoothL1 on MAX_SCORES-normalized targets",
+  "modality_dropout": 0.12,
+  "selected": {
+    "name": "all_modalities",
+    "modalities": [
+      1,
+      1,
+      1
+    ],
+    "alignment": "probabilistic",
+    "validation_macro_f1": 0.49760509906466865,
+    "best_epoch": 2,
+    "epochs": 10,
+    "seconds": 33.825700759887695,
+    "checkpoint": "excluded-local-artifact",
+    "test": {
+      "accuracy": 0.6633333333333333,
+      "precision_macro": 0.7467641787608126,
+      "recall_macro": 0.5144811195700008,
+      "f1_macro": 0.5223795923918323,
+      "f1_weighted": 0.6538571363810042,
+      "confusion_matrix": [
+        [
+          189,
+          39,
+          17,
+          0
+        ],
+        [
+          49,
+          118,
+          18,
+          0
+        ],
+        [
+          26,
+          35,
+          90,
+          0
+        ],
+        [
+          4,
+          10,
+          4,
+          1
+        ]
+      ],
+      "per_class": {
+        "Healthy": {
+          "precision": 0.7052238805970149,
+          "recall": 0.7714285714285715,
+          "f1-score": 0.7368421052631579,
+          "support": 245.0
+        },
+        "Mild_Stress": {
+          "precision": 0.5841584158415841,
+          "recall": 0.6378378378378379,
+          "f1-score": 0.6098191214470284,
+          "support": 185.0
+        },
+        "Moderate_Stress": {
+          "precision": 0.6976744186046512,
+          "recall": 0.5960264900662252,
+          "f1-score": 0.6428571428571429,
+          "support": 151.0
+        },
+        "Severe_Stress": {
+          "precision": 1.0,
+          "recall": 0.05263157894736842,
+          "f1-score": 0.1,
+          "support": 19.0
+        },
+        "accuracy": 0.6633333333333333,
+        "macro avg": {
+          "precision": 0.7467641787608126,
+          "recall": 0.5144811195700008,
+          "f1-score": 0.5223795923918323,
+          "support": 600.0
+        },
+        "weighted avg": {
+          "precision": 0.6753299914771067,
+          "recall": 0.6633333333333333,
+          "f1-score": 0.6538571363810042,
+          "support": 600.0
+        }
+      },
+      "regression": {
+        "Depression_Score": {
+          "mae": 8.096631050109863,
+          "mse": 88.74886322021484,
+          "rmse": 9.420661506508704,
+          "r2": 0.09693562984466553,
+          "explained_variance": 0.10754925012588501
+        },
+        "Anxiety_Score": {
+          "mae": 6.234415531158447,
+          "mse": 52.825260162353516,
+          "rmse": 7.268098799710521,
+          "r2": 0.007377326488494873,
+          "explained_variance": 0.019247710704803467
+        },
+        "Stress_Score": {
+          "mae": 9.255550384521484,
+          "mse": 118.11080932617188,
+          "rmse": 10.867879707016078,
+          "r2": 0.07723808288574219,
+          "explained_variance": 0.07895928621292114
+        }
+      },
+      "roc_auc_ovr_weighted": 0.8303076205374033
+    },
+    "history": [
+      {
+        "epoch": 1,
+        "train_loss": 0.9637731913157872,
+        "val_macro_f1": 0.47486014337807947,
+        "val_weighted_f1": 0.6206731333566909,
+        "val_mean_regression_rmse": 9.432622118886236,
+        "improved": true
+      },
+      {
+        "epoch": 2,
+        "train_loss": 0.7845245156969343,
+        "val_macro_f1": 0.49760509906466865,
+        "val_weighted_f1": 0.6493719199436789,
+        "val_mean_regression_rmse": 9.113851276979938,
+        "improved": true
+      },
+      {
+        "epoch": 3,
+        "train_loss": 0.7488874902044024,
+        "val_macro_f1": 0.4919952980895217,
+        "val_weighted_f1": 0.6178021001772472,
+        "val_mean_regression_rmse": 9.075188858990808,
+        "improved": false
+      },
+      {
+        "epoch": 4,
+        "train_loss": 0.7078769057137626,
+        "val_macro_f1": 0.4637940040723996,
+        "val_weighted_f1": 0.6056082373776648,
+        "val_mean_regression_rmse": 9.142770134692869,
+        "improved": false
+      },
+      {
+        "epoch": 5,
+        "train_loss": 0.6829693276541574,
+        "val_macro_f1": 0.4802457353958335,
+        "val_weighted_f1": 0.6062414423863771,
+        "val_mean_regression_rmse": 9.086052051494498,
+        "improved": false
+      },
+      {
+        "epoch": 6,
+        "train_loss": 0.6956815889903477,
+        "val_macro_f1": 0.4677894685136932,
+        "val_weighted_f1": 0.6135954228866842,
+        "val_mean_regression_rmse": 9.071501846032845,
+        "improved": false
+      },
+      {
+        "epoch": 7,
+        "train_loss": 0.6578426769801549,
+        "val_macro_f1": 0.4651065465935632,
+        "val_weighted_f1": 0.5875933816801865,
+        "val_mean_regression_rmse": 9.083952598402671,
+        "improved": false
+      },
+      {
+        "epoch": 8,
+        "train_loss": 0.6676858367238726,
+        "val_macro_f1": 0.44625620378074254,
+        "val_weighted_f1": 0.5857993495121341,
+        "val_mean_regression_rmse": 9.123292465769806,
+        "improved": false
+      },
+      {
+        "epoch": 9,
+        "train_loss": 0.6427222394943237,
+        "val_macro_f1": 0.4478859585231941,
+        "val_weighted_f1": 0.5698046175836055,
+        "val_mean_regression_rmse": 9.16220050255898,
+        "improved": false
+      },
+      {
+        "epoch": 10,
+        "train_loss": 0.6536979440280369,
+        "val_macro_f1": 0.43738873232442366,
+        "val_weighted_f1": 0.5709878403897696,
+        "val_mean_regression_rmse": 9.097520034289206,
+        "improved": false
+      }
+    ],
+    "mean_attention_weights": {
+      "face": 0.38786011934280396,
+      "speech": 0.3967449963092804,
+      "numerical": 0.2153950035572052
+    }
+  },
+  "ablations": [
+    {
+      "name": "numerical_only",
+      "modalities": [
+        0,
+        0,
+        1
+      ],
+      "alignment": "probabilistic",
+      "validation_macro_f1": 0.26954489084102295,
+      "best_epoch": 13,
+      "epochs": 21,
+      "seconds": 28.894282579421997,
+      "checkpoint": "excluded-local-artifact",
+      "test": {
+        "accuracy": 0.32166666666666666,
+        "precision_macro": 0.23914600280848708,
+        "recall_macro": 0.24393891796919234,
+        "f1_macro": 0.24091244725738398,
+        "f1_weighted": 0.3188236638537271,
+        "confusion_matrix": [
+          [
+            85,
+            93,
+            62,
+            5
+          ],
+          [
+            68,
+            71,
+            42,
+            4
+          ],
+          [
+            69,
+            43,
+            37,
+            2
+          ],
+          [
+            7,
+            8,
+            4,
+            0
+          ]
+        ],
+        "per_class": {
+          "Healthy": {
+            "precision": 0.37117903930131,
+            "recall": 0.3469387755102041,
+            "f1-score": 0.35864978902953587,
+            "support": 245.0
+          },
+          "Mild_Stress": {
+            "precision": 0.3302325581395349,
+            "recall": 0.3837837837837838,
+            "f1-score": 0.355,
+            "support": 185.0
+          },
+          "Moderate_Stress": {
+            "precision": 0.25517241379310346,
+            "recall": 0.24503311258278146,
+            "f1-score": 0.25,
+            "support": 151.0
+          },
+          "Severe_Stress": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 19.0
+          },
+          "accuracy": 0.32166666666666666,
+          "macro avg": {
+            "precision": 0.23914600280848708,
+            "recall": 0.24393891796919234,
+            "f1-score": 0.24091244725738398,
+            "support": 600.0
+          },
+          "weighted avg": {
+            "precision": 0.31760487061232257,
+            "recall": 0.32166666666666666,
+            "f1-score": 0.3188236638537271,
+            "support": 600.0
+          }
+        },
+        "regression": {
+          "Depression_Score": {
+            "mae": 9.202836990356445,
+            "mse": 117.1265869140625,
+            "rmse": 10.822503726682772,
+            "r2": -0.19182205200195312,
+            "explained_variance": -0.19179964065551758
+          },
+          "Anxiety_Score": {
+            "mae": 6.443671226501465,
+            "mse": 56.234676361083984,
+            "rmse": 7.498978354488296,
+            "r2": -0.05668795108795166,
+            "explained_variance": -0.05400800704956055
+          },
+          "Stress_Score": {
+            "mae": 10.144567489624023,
+            "mse": 140.56263732910156,
+            "rmse": 11.855911492968458,
+            "r2": -0.09817075729370117,
+            "explained_variance": -0.0966176986694336
+          }
+        },
+        "roc_auc_ovr_weighted": 0.48930712697217105
+      },
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 1.2043727595465523,
+          "val_macro_f1": 0.16838532715309967,
+          "val_weighted_f1": 0.2647440816161195,
+          "val_mean_regression_rmse": 9.489414155938592,
+          "improved": true
+        },
+        {
+          "epoch": 2,
+          "train_loss": 1.1216469464983259,
+          "val_macro_f1": 0.20351360241066122,
+          "val_weighted_f1": 0.3030620808929632,
+          "val_mean_regression_rmse": 9.530665270498742,
+          "improved": true
+        },
+        {
+          "epoch": 3,
+          "train_loss": 1.076576521056039,
+          "val_macro_f1": 0.23599721465416418,
+          "val_weighted_f1": 0.32883612656647526,
+          "val_mean_regression_rmse": 9.518979096673341,
+          "improved": true
+        },
+        {
+          "epoch": 4,
+          "train_loss": 1.0456153454099382,
+          "val_macro_f1": 0.24248271943280456,
+          "val_weighted_f1": 0.33442152970043904,
+          "val_mean_regression_rmse": 9.520229515157565,
+          "improved": true
+        },
+        {
+          "epoch": 5,
+          "train_loss": 1.014524974141802,
+          "val_macro_f1": 0.21877948596087637,
+          "val_weighted_f1": 0.3172008014376627,
+          "val_mean_regression_rmse": 9.560267965037195,
+          "improved": false
+        },
+        {
+          "epoch": 6,
+          "train_loss": 0.9887574464934212,
+          "val_macro_f1": 0.25200821462287415,
+          "val_weighted_f1": 0.3438439315588997,
+          "val_mean_regression_rmse": 9.519045705766766,
+          "improved": true
+        },
+        {
+          "epoch": 7,
+          "train_loss": 0.9594618027550833,
+          "val_macro_f1": 0.24667950888218015,
+          "val_weighted_f1": 0.3386456545330899,
+          "val_mean_regression_rmse": 9.550772021786559,
+          "improved": false
+        },
+        {
+          "epoch": 8,
+          "train_loss": 0.9225761219433376,
+          "val_macro_f1": 0.25249011909191355,
+          "val_weighted_f1": 0.33785748008858035,
+          "val_mean_regression_rmse": 9.543515136885512,
+          "improved": true
+        },
+        {
+          "epoch": 9,
+          "train_loss": 0.8853816355977739,
+          "val_macro_f1": 0.25809764778021504,
+          "val_weighted_f1": 0.3538901064746625,
+          "val_mean_regression_rmse": 9.658904359601555,
+          "improved": true
+        },
+        {
+          "epoch": 10,
+          "train_loss": 0.8440260383061,
+          "val_macro_f1": 0.2446658615136876,
+          "val_weighted_f1": 0.3351757917337628,
+          "val_mean_regression_rmse": 9.624553202835346,
+          "improved": false
+        },
+        {
+          "epoch": 11,
+          "train_loss": 0.8028149172237942,
+          "val_macro_f1": 0.2520280382336029,
+          "val_weighted_f1": 0.3389834994808093,
+          "val_mean_regression_rmse": 9.655958958547513,
+          "improved": false
+        },
+        {
+          "epoch": 12,
+          "train_loss": 0.7573487636021206,
+          "val_macro_f1": 0.2594374797743165,
+          "val_weighted_f1": 0.3514578907133042,
+          "val_mean_regression_rmse": 9.676243541224084,
+          "improved": true
+        },
+        {
+          "epoch": 13,
+          "train_loss": 0.7226078598839896,
+          "val_macro_f1": 0.26954489084102295,
+          "val_weighted_f1": 0.35985384907462353,
+          "val_mean_regression_rmse": 9.75323703519453,
+          "improved": true
+        },
+        {
+          "epoch": 14,
+          "train_loss": 0.6872368877274649,
+          "val_macro_f1": 0.2611908026860592,
+          "val_weighted_f1": 0.3523691363503302,
+          "val_mean_regression_rmse": 9.795255062481095,
+          "improved": false
+        },
+        {
+          "epoch": 15,
+          "train_loss": 0.6342979097366332,
+          "val_macro_f1": 0.26779719584942363,
+          "val_weighted_f1": 0.3582466172794615,
+          "val_mean_regression_rmse": 9.943610075636172,
+          "improved": false
+        },
+        {
+          "epoch": 16,
+          "train_loss": 0.601936970778874,
+          "val_macro_f1": 0.2617519589340841,
+          "val_weighted_f1": 0.357527434793879,
+          "val_mean_regression_rmse": 9.95367200961545,
+          "improved": false
+        },
+        {
+          "epoch": 17,
+          "train_loss": 0.5620947796957834,
+          "val_macro_f1": 0.26608850354571567,
+          "val_weighted_f1": 0.3620913053636942,
+          "val_mean_regression_rmse": 10.000258572046212,
+          "improved": false
+        },
+        {
+          "epoch": 18,
+          "train_loss": 0.49509286165237426,
+          "val_macro_f1": 0.2627354787926541,
+          "val_weighted_f1": 0.35589900425213905,
+          "val_mean_regression_rmse": 10.042632020523445,
+          "improved": false
+        },
+        {
+          "epoch": 19,
+          "train_loss": 0.45509646381650654,
+          "val_macro_f1": 0.24667838530895858,
+          "val_weighted_f1": 0.33458725838916925,
+          "val_mean_regression_rmse": 10.068097746247636,
+          "improved": false
+        },
+        {
+          "epoch": 20,
+          "train_loss": 0.44825696570532664,
+          "val_macro_f1": 0.25781986390396816,
+          "val_weighted_f1": 0.34494452650984186,
+          "val_mean_regression_rmse": 10.085203856317962,
+          "improved": false
+        },
+        {
+          "epoch": 21,
+          "train_loss": 0.40352324281420027,
+          "val_macro_f1": 0.2531672450905294,
+          "val_weighted_f1": 0.3478938738422607,
+          "val_mean_regression_rmse": 10.128937904795897,
+          "improved": false
+        }
+      ],
+      "mean_attention_weights": {
+        "face": 0.0,
+        "speech": 0.0,
+        "numerical": 1.0
+      }
+    },
+    {
+      "name": "image_numerical",
+      "modalities": [
+        1,
+        0,
+        1
+      ],
+      "alignment": "probabilistic",
+      "validation_macro_f1": 0.39843528178409715,
+      "best_epoch": 2,
+      "epochs": 10,
+      "seconds": 25.456340789794922,
+      "checkpoint": "excluded-local-artifact",
+      "test": {
+        "accuracy": 0.545,
+        "precision_macro": 0.45721641664667445,
+        "recall_macro": 0.41658092852884465,
+        "f1_macro": 0.420362463295016,
+        "f1_weighted": 0.5365223464779703,
+        "confusion_matrix": [
+          [
+            171,
+            48,
+            25,
+            1
+          ],
+          [
+            49,
+            91,
+            45,
+            0
+          ],
+          [
+            41,
+            44,
+            64,
+            2
+          ],
+          [
+            4,
+            8,
+            6,
+            1
+          ]
+        ],
+        "per_class": {
+          "Healthy": {
+            "precision": 0.6452830188679245,
+            "recall": 0.6979591836734694,
+            "f1-score": 0.6705882352941176,
+            "support": 245.0
+          },
+          "Mild_Stress": {
+            "precision": 0.47643979057591623,
+            "recall": 0.4918918918918919,
+            "f1-score": 0.48404255319148937,
+            "support": 185.0
+          },
+          "Moderate_Stress": {
+            "precision": 0.45714285714285713,
+            "recall": 0.423841059602649,
+            "f1-score": 0.43986254295532645,
+            "support": 151.0
+          },
+          "Severe_Stress": {
+            "precision": 0.25,
+            "recall": 0.05263157894736842,
+            "f1-score": 0.08695652173913043,
+            "support": 19.0
+          },
+          "accuracy": 0.545,
+          "macro avg": {
+            "precision": 0.45721641664667445,
+            "recall": 0.41658092852884465,
+            "f1-score": 0.420362463295016,
+            "support": 600.0
+          },
+          "weighted avg": {
+            "precision": 0.533357120512929,
+            "recall": 0.545,
+            "f1-score": 0.5365223464779703,
+            "support": 600.0
+          }
+        },
+        "regression": {
+          "Depression_Score": {
+            "mae": 7.993198394775391,
+            "mse": 88.41759490966797,
+            "rmse": 9.403063059964449,
+            "r2": 0.10030651092529297,
+            "explained_variance": 0.10222887992858887
+          },
+          "Anxiety_Score": {
+            "mae": 6.309095859527588,
+            "mse": 53.51301574707031,
+            "rmse": 7.3152591032081915,
+            "r2": -0.005546092987060547,
+            "explained_variance": 0.006696820259094238
+          },
+          "Stress_Score": {
+            "mae": 9.410630226135254,
+            "mse": 122.91207122802734,
+            "rmse": 11.086571662512597,
+            "r2": 0.03972738981246948,
+            "explained_variance": 0.04398906230926514
+          }
+        },
+        "roc_auc_ovr_weighted": 0.7193936440532085
+      },
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 1.0342612399373736,
+          "val_macro_f1": 0.39185775467868217,
+          "val_weighted_f1": 0.5161070278750567,
+          "val_mean_regression_rmse": 9.535424860555425,
+          "improved": true
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.9174869363648551,
+          "val_macro_f1": 0.39843528178409715,
+          "val_weighted_f1": 0.526106497434757,
+          "val_mean_regression_rmse": 9.430399342471274,
+          "improved": true
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.8866175392695835,
+          "val_macro_f1": 0.38282423023058565,
+          "val_weighted_f1": 0.5072733771229067,
+          "val_mean_regression_rmse": 9.386829413155533,
+          "improved": false
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.841270604133606,
+          "val_macro_f1": 0.37199121006989866,
+          "val_weighted_f1": 0.4963035461101005,
+          "val_mean_regression_rmse": 9.474358660895064,
+          "improved": false
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.8294706991740636,
+          "val_macro_f1": 0.3888721098677918,
+          "val_weighted_f1": 0.5141959657165591,
+          "val_mean_regression_rmse": 9.354910583833876,
+          "improved": false
+        },
+        {
+          "epoch": 6,
+          "train_loss": 0.8330088179452079,
+          "val_macro_f1": 0.38339996395939424,
+          "val_weighted_f1": 0.5083660568685163,
+          "val_mean_regression_rmse": 9.361436883478039,
+          "improved": false
+        },
+        {
+          "epoch": 7,
+          "train_loss": 0.8038770052364894,
+          "val_macro_f1": 0.3736172465408346,
+          "val_weighted_f1": 0.49779258393876336,
+          "val_mean_regression_rmse": 9.372284934336571,
+          "improved": false
+        },
+        {
+          "epoch": 8,
+          "train_loss": 0.791244820526668,
+          "val_macro_f1": 0.357378050033126,
+          "val_weighted_f1": 0.47755074828848904,
+          "val_mean_regression_rmse": 9.460244304712653,
+          "improved": false
+        },
+        {
+          "epoch": 9,
+          "train_loss": 0.7659945147378104,
+          "val_macro_f1": 0.36409586414528394,
+          "val_weighted_f1": 0.48657855562485147,
+          "val_mean_regression_rmse": 9.446961788931684,
+          "improved": false
+        },
+        {
+          "epoch": 10,
+          "train_loss": 0.7616129289354597,
+          "val_macro_f1": 0.37105136981388226,
+          "val_weighted_f1": 0.49639498370428764,
+          "val_mean_regression_rmse": 9.49760232657198,
+          "improved": false
+        }
+      ],
+      "mean_attention_weights": {
+        "face": 0.7997007966041565,
+        "speech": 0.0,
+        "numerical": 0.2002992331981659
+      }
+    },
+    {
+      "name": "audio_numerical",
+      "modalities": [
+        0,
+        1,
+        1
+      ],
+      "alignment": "probabilistic",
+      "validation_macro_f1": 0.4800924586630364,
+      "best_epoch": 5,
+      "epochs": 13,
+      "seconds": 60.09875774383545,
+      "checkpoint": "excluded-local-artifact",
+      "test": {
+        "accuracy": 0.6233333333333333,
+        "precision_macro": 0.4826962153924308,
+        "recall_macro": 0.48060804418420316,
+        "f1_macro": 0.47564989300752397,
+        "f1_weighted": 0.6178591104668553,
+        "confusion_matrix": [
+          [
+            154,
+            71,
+            19,
+            1
+          ],
+          [
+            36,
+            134,
+            14,
+            1
+          ],
+          [
+            26,
+            36,
+            86,
+            3
+          ],
+          [
+            1,
+            13,
+            5,
+            0
+          ]
+        ],
+        "per_class": {
+          "Healthy": {
+            "precision": 0.7096774193548387,
+            "recall": 0.6285714285714286,
+            "f1-score": 0.6666666666666666,
+            "support": 245.0
+          },
+          "Mild_Stress": {
+            "precision": 0.5275590551181102,
+            "recall": 0.7243243243243244,
+            "f1-score": 0.6104783599088838,
+            "support": 185.0
+          },
+          "Moderate_Stress": {
+            "precision": 0.6935483870967742,
+            "recall": 0.5695364238410596,
+            "f1-score": 0.6254545454545455,
+            "support": 151.0
+          },
+          "Severe_Stress": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 19.0
+          },
+          "accuracy": 0.6233333333333333,
+          "macro avg": {
+            "precision": 0.4826962153924308,
+            "recall": 0.48060804418420316,
+            "f1-score": 0.47564989300752397,
+            "support": 600.0
+          },
+          "weighted avg": {
+            "precision": 0.6269919989839979,
+            "recall": 0.6233333333333333,
+            "f1-score": 0.6178591104668553,
+            "support": 600.0
+          }
+        },
+        "regression": {
+          "Depression_Score": {
+            "mae": 7.970821857452393,
+            "mse": 87.4338150024414,
+            "rmse": 9.350605060766998,
+            "r2": 0.11031687259674072,
+            "explained_variance": 0.11252355575561523
+          },
+          "Anxiety_Score": {
+            "mae": 6.395939826965332,
+            "mse": 55.406063079833984,
+            "rmse": 7.443524909599885,
+            "r2": -0.04111766815185547,
+            "explained_variance": -0.006720900535583496
+          },
+          "Stress_Score": {
+            "mae": 9.317509651184082,
+            "mse": 121.8578872680664,
+            "rmse": 11.038926001566747,
+            "r2": 0.04796332120895386,
+            "explained_variance": 0.048888564109802246
+          }
+        },
+        "roc_auc_ovr_weighted": 0.7591752135337764
+      },
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 1.0577131291798183,
+          "val_macro_f1": 0.45038709176468483,
+          "val_weighted_f1": 0.5876752521957265,
+          "val_mean_regression_rmse": 9.265554539201803,
+          "improved": true
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.9437387176922389,
+          "val_macro_f1": 0.4561208400429415,
+          "val_weighted_f1": 0.5924391214886384,
+          "val_mean_regression_rmse": 9.071944136350725,
+          "improved": true
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.9152524362291609,
+          "val_macro_f1": 0.4371288337711382,
+          "val_weighted_f1": 0.5685810753123703,
+          "val_mean_regression_rmse": 9.080821902157728,
+          "improved": false
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.8896358578545707,
+          "val_macro_f1": 0.4655094382770408,
+          "val_weighted_f1": 0.5826451536675504,
+          "val_mean_regression_rmse": 9.014698321314507,
+          "improved": true
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.8494170117378235,
+          "val_macro_f1": 0.4800924586630364,
+          "val_weighted_f1": 0.6010051939457537,
+          "val_mean_regression_rmse": 9.047548549506066,
+          "improved": true
+        },
+        {
+          "epoch": 6,
+          "train_loss": 0.8678855507714408,
+          "val_macro_f1": 0.45842528374529035,
+          "val_weighted_f1": 0.575110796056677,
+          "val_mean_regression_rmse": 9.089302239906933,
+          "improved": false
+        },
+        {
+          "epoch": 7,
+          "train_loss": 0.813584235736302,
+          "val_macro_f1": 0.4629853599272694,
+          "val_weighted_f1": 0.584297164776698,
+          "val_mean_regression_rmse": 9.081145527335055,
+          "improved": false
+        },
+        {
+          "epoch": 8,
+          "train_loss": 0.8158697506359646,
+          "val_macro_f1": 0.42227818500252134,
+          "val_weighted_f1": 0.5520047885182597,
+          "val_mean_regression_rmse": 9.135711498995004,
+          "improved": false
+        },
+        {
+          "epoch": 9,
+          "train_loss": 0.7889815899303981,
+          "val_macro_f1": 0.40021311382577607,
+          "val_weighted_f1": 0.5245931472424293,
+          "val_mean_regression_rmse": 9.209994099489869,
+          "improved": false
+        },
+        {
+          "epoch": 10,
+          "train_loss": 0.7894157539095198,
+          "val_macro_f1": 0.417470232741752,
+          "val_weighted_f1": 0.5473122145836442,
+          "val_mean_regression_rmse": 9.185518987421142,
+          "improved": false
+        },
+        {
+          "epoch": 11,
+          "train_loss": 0.7729537974085127,
+          "val_macro_f1": 0.4039875789101795,
+          "val_weighted_f1": 0.5291438497320851,
+          "val_mean_regression_rmse": 9.187824780138213,
+          "improved": false
+        },
+        {
+          "epoch": 12,
+          "train_loss": 0.7370190930366516,
+          "val_macro_f1": 0.4061087261390187,
+          "val_weighted_f1": 0.5315404098101976,
+          "val_mean_regression_rmse": 9.184661836528498,
+          "improved": false
+        },
+        {
+          "epoch": 13,
+          "train_loss": 0.7093410199029105,
+          "val_macro_f1": 0.41535501773903427,
+          "val_weighted_f1": 0.5431662067446221,
+          "val_mean_regression_rmse": 9.223961426950645,
+          "improved": false
+        }
+      ],
+      "mean_attention_weights": {
+        "face": 0.0,
+        "speech": 0.4048649072647095,
+        "numerical": 0.5951352715492249
+      }
+    },
+    {
+      "name": "image_audio",
+      "modalities": [
+        1,
+        1,
+        0
+      ],
+      "alignment": "probabilistic",
+      "validation_macro_f1": 0.5856554709910814,
+      "best_epoch": 6,
+      "epochs": 14,
+      "seconds": 56.369895935058594,
+      "checkpoint": "excluded-local-artifact",
+      "test": {
+        "accuracy": 0.67,
+        "precision_macro": 0.6314640599725257,
+        "recall_macro": 0.5887667915601988,
+        "f1_macro": 0.605297603859938,
+        "f1_weighted": 0.666114917156028,
+        "confusion_matrix": [
+          [
+            194,
+            29,
+            21,
+            1
+          ],
+          [
+            43,
+            112,
+            26,
+            4
+          ],
+          [
+            31,
+            30,
+            89,
+            1
+          ],
+          [
+            4,
+            2,
+            6,
+            7
+          ]
+        ],
+        "per_class": {
+          "Healthy": {
+            "precision": 0.7132352941176471,
+            "recall": 0.7918367346938775,
+            "f1-score": 0.7504835589941973,
+            "support": 245.0
+          },
+          "Mild_Stress": {
+            "precision": 0.6473988439306358,
+            "recall": 0.6054054054054054,
+            "f1-score": 0.6256983240223464,
+            "support": 185.0
+          },
+          "Moderate_Stress": {
+            "precision": 0.6267605633802817,
+            "recall": 0.5894039735099338,
+            "f1-score": 0.6075085324232082,
+            "support": 151.0
+          },
+          "Severe_Stress": {
+            "precision": 0.5384615384615384,
+            "recall": 0.3684210526315789,
+            "f1-score": 0.4375,
+            "support": 19.0
+          },
+          "accuracy": 0.67,
+          "macro avg": {
+            "precision": 0.6314640599725257,
+            "recall": 0.5887667915601988,
+            "f1-score": 0.605297603859938,
+            "support": 600.0
+          },
+          "weighted avg": {
+            "precision": 0.6656384124786382,
+            "recall": 0.67,
+            "f1-score": 0.666114917156028,
+            "support": 600.0
+          }
+        },
+        "regression": {
+          "Depression_Score": {
+            "mae": 7.57133150100708,
+            "mse": 81.51420593261719,
+            "rmse": 9.028521802189836,
+            "r2": 0.17055189609527588,
+            "explained_variance": 0.17312008142471313
+          },
+          "Anxiety_Score": {
+            "mae": 6.176731109619141,
+            "mse": 52.167362213134766,
+            "rmse": 7.222697710214291,
+            "r2": 0.019739627838134766,
+            "explained_variance": 0.04138386249542236
+          },
+          "Stress_Score": {
+            "mae": 9.177584648132324,
+            "mse": 116.68903350830078,
+            "rmse": 10.802269831304011,
+            "r2": 0.08834594488143921,
+            "explained_variance": 0.09096264839172363
+          }
+        },
+        "roc_auc_ovr_weighted": 0.8306000138720174
+      },
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.9196216079166958,
+          "val_macro_f1": 0.4671730037527364,
+          "val_weighted_f1": 0.6104338355803421,
+          "val_mean_regression_rmse": 9.533400860811135,
+          "improved": true
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.7685480080332074,
+          "val_macro_f1": 0.5340797152648862,
+          "val_weighted_f1": 0.6468608041764016,
+          "val_mean_regression_rmse": 9.20703654996297,
+          "improved": true
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.7680015209742955,
+          "val_macro_f1": 0.5266075953032475,
+          "val_weighted_f1": 0.6379541656411221,
+          "val_mean_regression_rmse": 9.045175184669276,
+          "improved": false
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.7557853078842163,
+          "val_macro_f1": 0.5643961420753071,
+          "val_weighted_f1": 0.6543730355758649,
+          "val_mean_regression_rmse": 8.99193385376899,
+          "improved": true
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.7452343576295035,
+          "val_macro_f1": 0.5310830014152113,
+          "val_weighted_f1": 0.6440001716734023,
+          "val_mean_regression_rmse": 8.956628738206682,
+          "improved": false
+        },
+        {
+          "epoch": 6,
+          "train_loss": 0.7808596195493426,
+          "val_macro_f1": 0.5856554709910814,
+          "val_weighted_f1": 0.6573134526793345,
+          "val_mean_regression_rmse": 8.955315804390045,
+          "improved": true
+        },
+        {
+          "epoch": 7,
+          "train_loss": 0.7447554748398917,
+          "val_macro_f1": 0.5568833438907284,
+          "val_weighted_f1": 0.6340580020174383,
+          "val_mean_regression_rmse": 9.040793971367332,
+          "improved": false
+        },
+        {
+          "epoch": 8,
+          "train_loss": 0.7501339765957423,
+          "val_macro_f1": 0.5333036814242514,
+          "val_weighted_f1": 0.6321559725914523,
+          "val_mean_regression_rmse": 8.96497754612912,
+          "improved": false
+        },
+        {
+          "epoch": 9,
+          "train_loss": 0.7404267464365278,
+          "val_macro_f1": 0.5382656868621953,
+          "val_weighted_f1": 0.6214734518547983,
+          "val_mean_regression_rmse": 9.045724785565522,
+          "improved": false
+        },
+        {
+          "epoch": 10,
+          "train_loss": 0.7606002977916173,
+          "val_macro_f1": 0.5666877416139621,
+          "val_weighted_f1": 0.6346002663621403,
+          "val_mean_regression_rmse": 9.013554150849442,
+          "improved": false
+        },
+        {
+          "epoch": 11,
+          "train_loss": 0.7254851433209011,
+          "val_macro_f1": 0.5693157401448636,
+          "val_weighted_f1": 0.6528685617441029,
+          "val_mean_regression_rmse": 9.015431060548103,
+          "improved": false
+        },
+        {
+          "epoch": 12,
+          "train_loss": 0.7281346440315246,
+          "val_macro_f1": 0.5402001264739799,
+          "val_weighted_f1": 0.6390836024568867,
+          "val_mean_regression_rmse": 8.966810650682104,
+          "improved": false
+        },
+        {
+          "epoch": 13,
+          "train_loss": 0.7348956632614135,
+          "val_macro_f1": 0.5188718470837628,
+          "val_weighted_f1": 0.6293147101570582,
+          "val_mean_regression_rmse": 8.979738144884307,
+          "improved": false
+        },
+        {
+          "epoch": 14,
+          "train_loss": 0.7380772181919643,
+          "val_macro_f1": 0.5229548819493891,
+          "val_weighted_f1": 0.6225685492226027,
+          "val_mean_regression_rmse": 9.051480745859989,
+          "improved": false
+        }
+      ],
+      "mean_attention_weights": {
+        "face": 0.5195106267929077,
+        "speech": 0.48048949241638184,
+        "numerical": 0.0
+      }
+    },
+    {
+      "name": "all_modalities",
+      "modalities": [
+        1,
+        1,
+        1
+      ],
+      "alignment": "probabilistic",
+      "validation_macro_f1": 0.49760509906466865,
+      "best_epoch": 2,
+      "epochs": 10,
+      "seconds": 33.825700759887695,
+      "checkpoint": "excluded-local-artifact",
+      "test": {
+        "accuracy": 0.6633333333333333,
+        "precision_macro": 0.7467641787608126,
+        "recall_macro": 0.5144811195700008,
+        "f1_macro": 0.5223795923918323,
+        "f1_weighted": 0.6538571363810042,
+        "confusion_matrix": [
+          [
+            189,
+            39,
+            17,
+            0
+          ],
+          [
+            49,
+            118,
+            18,
+            0
+          ],
+          [
+            26,
+            35,
+            90,
+            0
+          ],
+          [
+            4,
+            10,
+            4,
+            1
+          ]
+        ],
+        "per_class": {
+          "Healthy": {
+            "precision": 0.7052238805970149,
+            "recall": 0.7714285714285715,
+            "f1-score": 0.7368421052631579,
+            "support": 245.0
+          },
+          "Mild_Stress": {
+            "precision": 0.5841584158415841,
+            "recall": 0.6378378378378379,
+            "f1-score": 0.6098191214470284,
+            "support": 185.0
+          },
+          "Moderate_Stress": {
+            "precision": 0.6976744186046512,
+            "recall": 0.5960264900662252,
+            "f1-score": 0.6428571428571429,
+            "support": 151.0
+          },
+          "Severe_Stress": {
+            "precision": 1.0,
+            "recall": 0.05263157894736842,
+            "f1-score": 0.1,
+            "support": 19.0
+          },
+          "accuracy": 0.6633333333333333,
+          "macro avg": {
+            "precision": 0.7467641787608126,
+            "recall": 0.5144811195700008,
+            "f1-score": 0.5223795923918323,
+            "support": 600.0
+          },
+          "weighted avg": {
+            "precision": 0.6753299914771067,
+            "recall": 0.6633333333333333,
+            "f1-score": 0.6538571363810042,
+            "support": 600.0
+          }
+        },
+        "regression": {
+          "Depression_Score": {
+            "mae": 8.096631050109863,
+            "mse": 88.74886322021484,
+            "rmse": 9.420661506508704,
+            "r2": 0.09693562984466553,
+            "explained_variance": 0.10754925012588501
+          },
+          "Anxiety_Score": {
+            "mae": 6.234415531158447,
+            "mse": 52.825260162353516,
+            "rmse": 7.268098799710521,
+            "r2": 0.007377326488494873,
+            "explained_variance": 0.019247710704803467
+          },
+          "Stress_Score": {
+            "mae": 9.255550384521484,
+            "mse": 118.11080932617188,
+            "rmse": 10.867879707016078,
+            "r2": 0.07723808288574219,
+            "explained_variance": 0.07895928621292114
+          }
+        },
+        "roc_auc_ovr_weighted": 0.8303076205374033
+      },
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.9637731913157872,
+          "val_macro_f1": 0.47486014337807947,
+          "val_weighted_f1": 0.6206731333566909,
+          "val_mean_regression_rmse": 9.432622118886236,
+          "improved": true
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.7845245156969343,
+          "val_macro_f1": 0.49760509906466865,
+          "val_weighted_f1": 0.6493719199436789,
+          "val_mean_regression_rmse": 9.113851276979938,
+          "improved": true
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.7488874902044024,
+          "val_macro_f1": 0.4919952980895217,
+          "val_weighted_f1": 0.6178021001772472,
+          "val_mean_regression_rmse": 9.075188858990808,
+          "improved": false
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.7078769057137626,
+          "val_macro_f1": 0.4637940040723996,
+          "val_weighted_f1": 0.6056082373776648,
+          "val_mean_regression_rmse": 9.142770134692869,
+          "improved": false
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.6829693276541574,
+          "val_macro_f1": 0.4802457353958335,
+          "val_weighted_f1": 0.6062414423863771,
+          "val_mean_regression_rmse": 9.086052051494498,
+          "improved": false
+        },
+        {
+          "epoch": 6,
+          "train_loss": 0.6956815889903477,
+          "val_macro_f1": 0.4677894685136932,
+          "val_weighted_f1": 0.6135954228866842,
+          "val_mean_regression_rmse": 9.071501846032845,
+          "improved": false
+        },
+        {
+          "epoch": 7,
+          "train_loss": 0.6578426769801549,
+          "val_macro_f1": 0.4651065465935632,
+          "val_weighted_f1": 0.5875933816801865,
+          "val_mean_regression_rmse": 9.083952598402671,
+          "improved": false
+        },
+        {
+          "epoch": 8,
+          "train_loss": 0.6676858367238726,
+          "val_macro_f1": 0.44625620378074254,
+          "val_weighted_f1": 0.5857993495121341,
+          "val_mean_regression_rmse": 9.123292465769806,
+          "improved": false
+        },
+        {
+          "epoch": 9,
+          "train_loss": 0.6427222394943237,
+          "val_macro_f1": 0.4478859585231941,
+          "val_weighted_f1": 0.5698046175836055,
+          "val_mean_regression_rmse": 9.16220050255898,
+          "improved": false
+        },
+        {
+          "epoch": 10,
+          "train_loss": 0.6536979440280369,
+          "val_macro_f1": 0.43738873232442366,
+          "val_weighted_f1": 0.5709878403897696,
+          "val_mean_regression_rmse": 9.097520034289206,
+          "improved": false
+        }
+      ],
+      "mean_attention_weights": {
+        "face": 0.38786011934280396,
+        "speech": 0.3967449963092804,
+        "numerical": 0.2153950035572052
+      }
+    },
+    {
+      "name": "same_class_control",
+      "modalities": [
+        1,
+        1,
+        1
+      ],
+      "alignment": "same",
+      "validation_macro_f1": 0.838660890982755,
+      "best_epoch": 3,
+      "epochs": 11,
+      "seconds": 28.018720388412476,
+      "checkpoint": "excluded-local-artifact",
+      "test": {
+        "accuracy": 0.8733333333333333,
+        "precision_macro": 0.8348624051069704,
+        "recall_macro": 0.8388512191778636,
+        "f1_macro": 0.8365694646639514,
+        "f1_weighted": 0.8733156363359975,
+        "confusion_matrix": [
+          [
+            223,
+            13,
+            5,
+            4
+          ],
+          [
+            17,
+            158,
+            9,
+            1
+          ],
+          [
+            12,
+            9,
+            129,
+            1
+          ],
+          [
+            0,
+            4,
+            1,
+            14
+          ]
+        ],
+        "per_class": {
+          "Healthy": {
+            "precision": 0.8849206349206349,
+            "recall": 0.9102040816326531,
+            "f1-score": 0.89738430583501,
+            "support": 245.0
+          },
+          "Mild_Stress": {
+            "precision": 0.8586956521739131,
+            "recall": 0.8540540540540541,
+            "f1-score": 0.8563685636856369,
+            "support": 185.0
+          },
+          "Moderate_Stress": {
+            "precision": 0.8958333333333334,
+            "recall": 0.8543046357615894,
+            "f1-score": 0.8745762711864407,
+            "support": 151.0
+          },
+          "Severe_Stress": {
+            "precision": 0.7,
+            "recall": 0.7368421052631579,
+            "f1-score": 0.717948717948718,
+            "support": 19.0
+          },
+          "accuracy": 0.8733333333333333,
+          "macro avg": {
+            "precision": 0.8348624051069704,
+            "recall": 0.8388512191778636,
+            "f1-score": 0.8365694646639514,
+            "support": 600.0
+          },
+          "weighted avg": {
+            "precision": 0.8737251409017712,
+            "recall": 0.8733333333333333,
+            "f1-score": 0.8733156363359975,
+            "support": 600.0
+          }
+        },
+        "regression": {
+          "Depression_Score": {
+            "mae": 6.851896286010742,
+            "mse": 69.83747863769531,
+            "rmse": 8.356882112229137,
+            "r2": 0.2893684506416321,
+            "explained_variance": 0.2913389801979065
+          },
+          "Anxiety_Score": {
+            "mae": 5.985291957855225,
+            "mse": 49.425331115722656,
+            "rmse": 7.030315150526515,
+            "r2": 0.07126426696777344,
+            "explained_variance": 0.09176629781723022
+          },
+          "Stress_Score": {
+            "mae": 8.307421684265137,
+            "mse": 100.27665710449219,
+            "rmse": 10.013823301042024,
+            "r2": 0.21657061576843262,
+            "explained_variance": 0.2175743579864502
+          }
+        },
+        "roc_auc_ovr_weighted": 0.9737796550053714
+      },
+      "history": [
+        {
+          "epoch": 1,
+          "train_loss": 0.5381608641999108,
+          "val_macro_f1": 0.7934923396645884,
+          "val_weighted_f1": 0.8537336200924718,
+          "val_mean_regression_rmse": 9.311555137611323,
+          "improved": true
+        },
+        {
+          "epoch": 2,
+          "train_loss": 0.18162218775068012,
+          "val_macro_f1": 0.8216540104267649,
+          "val_weighted_f1": 0.857103470077061,
+          "val_mean_regression_rmse": 8.58833745738927,
+          "improved": true
+        },
+        {
+          "epoch": 3,
+          "train_loss": 0.13766791079725538,
+          "val_macro_f1": 0.838660890982755,
+          "val_weighted_f1": 0.8740479683181737,
+          "val_mean_regression_rmse": 8.40469127441885,
+          "improved": true
+        },
+        {
+          "epoch": 4,
+          "train_loss": 0.11350798436573574,
+          "val_macro_f1": 0.8030431028809835,
+          "val_weighted_f1": 0.8547984006527948,
+          "val_mean_regression_rmse": 8.464839413805178,
+          "improved": false
+        },
+        {
+          "epoch": 5,
+          "train_loss": 0.13034457002367292,
+          "val_macro_f1": 0.8078516541047901,
+          "val_weighted_f1": 0.8586230911287546,
+          "val_mean_regression_rmse": 8.489782389167935,
+          "improved": false
+        },
+        {
+          "epoch": 6,
+          "train_loss": 0.11063210959945406,
+          "val_macro_f1": 0.8149154128090819,
+          "val_weighted_f1": 0.8490259694520469,
+          "val_mean_regression_rmse": 8.492613804316676,
+          "improved": false
+        },
+        {
+          "epoch": 7,
+          "train_loss": 0.12913285672664643,
+          "val_macro_f1": 0.8279501756671634,
+          "val_weighted_f1": 0.856236273529439,
+          "val_mean_regression_rmse": 8.493174665548354,
+          "improved": false
+        },
+        {
+          "epoch": 8,
+          "train_loss": 0.12209720586027419,
+          "val_macro_f1": 0.8307778849244616,
+          "val_weighted_f1": 0.870279989591465,
+          "val_mean_regression_rmse": 8.410787868981188,
+          "improved": false
+        },
+        {
+          "epoch": 9,
+          "train_loss": 0.11022185989788601,
+          "val_macro_f1": 0.7824055575930209,
+          "val_weighted_f1": 0.8374039291965263,
+          "val_mean_regression_rmse": 8.46422013477382,
+          "improved": false
+        },
+        {
+          "epoch": 10,
+          "train_loss": 0.10625905922480992,
+          "val_macro_f1": 0.8123917146353921,
+          "val_weighted_f1": 0.8643485450473068,
+          "val_mean_regression_rmse": 8.37142871052716,
+          "improved": false
+        },
+        {
+          "epoch": 11,
+          "train_loss": 0.10817065826484135,
+          "val_macro_f1": 0.8169548500655286,
+          "val_weighted_f1": 0.8601534205043048,
+          "val_mean_regression_rmse": 8.356591287928193,
+          "improved": false
+        }
+      ],
+      "mean_attention_weights": {
+        "face": 0.5362040996551514,
+        "speech": 0.3615216016769409,
+        "numerical": 0.10227387398481369
+      }
+    }
+  ],
+  "scientific_warning": "Metrics evaluate the weak class-conditional construction across three independent sample spaces (face/speech/numerical are not participant-paired). Same-class control is retained only as a diagnostic upper bound, not a deployment candidate."
+}

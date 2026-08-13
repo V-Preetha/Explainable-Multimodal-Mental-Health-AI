@@ -1,0 +1,8 @@
+primary_model: emotion2vec_plus_base_attentive_statistics_pooling
+evaluation_protocol: actor_independent
+train_actors: [1, 4, 6, 7, 8, 10, 11, 12, 13, 16, 17, 18, 19, 20, 21, 24]
+validation_actors: [3, 5, 15, 23]
+test_actors: [2, 9, 14, 22]
+batch_size: 16
+learning_rate: 3.0e-4
+seed: 42

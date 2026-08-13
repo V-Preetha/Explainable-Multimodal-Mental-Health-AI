@@ -1,0 +1,61 @@
+{
+  "face": {
+    "selected_model": "ConvNeXt-Tiny real-only",
+    "protocol": "Original FER2013 train; unchanged real validation and test splits",
+    "best_validation_accuracy": 0.6876451463,
+    "best_validation_macro_f1": 0.6799339209,
+    "best_epoch": 22,
+    "test_accuracy": 0.6895751103,
+    "test_macro_f1": 0.6852434920,
+    "test_weighted_f1": 0.6877526452,
+    "test_macro_roc_auc": 0.9102756250
+  },
+  "speech_primary": {
+    "selected_model": "emotion2vec+ with attentive statistics pooling",
+    "protocol": "Actor-independent RAVDESS; zero actor overlap",
+    "accuracy": 0.7583333333,
+    "macro_f1": 0.7404571095,
+    "weighted_f1": 0.7587098057,
+    "macro_roc_auc": 0.9614740728
+  },
+  "speech_random_split_ablation": {
+    "model": "Augmented emotion2vec+ and engineered-feature hybrid",
+    "protocol": "RANDOM SPLIT; not speaker-independent",
+    "accuracy": 0.8657407407,
+    "macro_f1": 0.8505346779,
+    "weighted_f1": 0.8663002005,
+    "macro_roc_auc": 0.9878741860
+  },
+  "numerical_original_baseline": {
+    "protocol": "Original data baseline",
+    "accuracy": 0.2617,
+    "macro_f1": 0.2245,
+    "macro_roc_auc": 0.4612
+  },
+  "numerical_synthetic_only": {
+    "protocol": "Synthetic-only XGBoost benchmark on synthetic held-out data",
+    "accuracy": 0.8960,
+    "macro_f1": 0.8962,
+    "macro_roc_auc": 0.9845
+  },
+  "numerical_synthetic_enhanced_real_test": {
+    "protocol": "Synthetic-enhanced training evaluated on original-real test data",
+    "accuracy": 0.4000,
+    "macro_f1": 0.1988
+  },
+  "numerical_regression_synthetic_holdout": {
+    "protocol": "Synthetic-held-out regression",
+    "depression_r2": 0.729,
+    "anxiety_r2": 0.717,
+    "stress_r2": 0.714
+  },
+  "fusion": {
+    "model": "Gated multimodal multi-task fusion",
+    "protocol": "Weak class-conditional alignment across independent datasets; not participant-paired",
+    "best_validation_macro_f1": 0.4976050991,
+    "test_accuracy": 0.6633333333,
+    "test_macro_f1": 0.5223795924,
+    "test_weighted_f1": 0.6538571364,
+    "test_weighted_roc_auc": 0.8303076205
+  }
+}
