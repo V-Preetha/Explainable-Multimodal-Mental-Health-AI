@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import io
 import json
 import math
@@ -68,6 +69,7 @@ numerical_model = NumericalMultiTask().to(DEVICE)
 numerical_model.load_state_dict(numerical_checkpoint["state_dict"])
 numerical_model.eval()
 numerical_scaler = joblib.load(MODEL_DIR / "numerical_scaler.joblib")
+synthetic_numerical = joblib.load(MODEL_DIR / "numerical_synthetic_18_xgboost.joblib")
 
 fusion_checkpoint = _checkpoint("fusion_all_modalities.pt")
 fusion_model = GatedFusionMultiTask().to(DEVICE)
@@ -127,8 +129,46 @@ def _face_inference(raw: bytes):
         embedding, logits = face_model(tensor, return_embedding=True)
         probabilities = logits.softmax(dim=1)[0].cpu().numpy()
     values = dict(zip(FACE_CLASSES, map(float, probabilities)))
-    label = FACE_CLASSES[int(probabilities.argmax())]
-    return embedding, values, label, _stress_evidence(values, FACE_STRESS)
+    pred_index = int(probabilities.argmax())
+    label = FACE_CLASSES[pred_index]
+    return embedding, values, label, _stress_evidence(values, FACE_STRESS), tensor, image, pred_index
+
+
+def _face_gradcam(tensor: torch.Tensor, target_class: int) -> Optional[np.ndarray]:
+    """Grad-CAM over the last ConvNeXt stage, run as a separate autograd pass
+    (the main inference above stays under torch.inference_mode() for speed)."""
+    layer = face_model.backbone.features[-1]
+    activations: dict[str, torch.Tensor] = {}
+    gradients: dict[str, torch.Tensor] = {}
+    forward_handle = layer.register_forward_hook(lambda module, inp, out: activations.__setitem__("value", out))
+    backward_handle = layer.register_full_backward_hook(lambda module, gin, gout: gradients.__setitem__("value", gout[0]))
+    try:
+        with torch.enable_grad():
+            face_model.zero_grad(set_to_none=True)
+            grad_input = tensor.clone().detach().requires_grad_(True)
+            _, logits = face_model(grad_input, return_embedding=True)
+            logits[0, target_class].backward()
+        weights = gradients["value"].mean(dim=(2, 3), keepdim=True)
+        cam = torch.relu((weights * activations["value"]).sum(dim=1))[0]
+        cam = cam - cam.min()
+        cam = cam / (cam.max() + 1e-8)
+        return cam.detach().cpu().numpy()
+    finally:
+        forward_handle.remove()
+        backward_handle.remove()
+
+
+def _face_overlay_data_uri(image: Image.Image, cam: np.ndarray, size: int) -> str:
+    from matplotlib import cm
+
+    cam_resized = Image.fromarray((cam * 255).astype(np.uint8)).resize((size, size), Image.BICUBIC)
+    cam_normalized = np.asarray(cam_resized).astype(np.float32) / 255.0
+    heatmap = Image.fromarray((cm.jet(cam_normalized)[:, :, :3] * 255).astype(np.uint8))
+    base = image.convert("RGB").resize((size, size))
+    blended = Image.blend(base, heatmap, alpha=0.45)
+    buffer = io.BytesIO()
+    blended.save(buffer, format="PNG")
+    return "data:image/png;base64," + base64.b64encode(buffer.getvalue()).decode("ascii")
 
 
 def _speech_inference(raw: bytes):
@@ -151,7 +191,34 @@ def _speech_inference(raw: bytes):
         probabilities = logits.softmax(dim=1)[0].cpu().numpy()
     values = dict(zip(SPEECH_CLASSES, map(float, probabilities)))
     label = SPEECH_CLASSES[int(probabilities.argmax())]
-    return embedding, values, label, attention[0].cpu().tolist(), _stress_evidence(values, SPEECH_STRESS)
+    contribution = _speech_acoustic_contribution(waveform, 16000)
+    return embedding, values, label, attention[0].cpu().tolist(), _stress_evidence(values, SPEECH_STRESS), contribution
+
+
+def _speech_acoustic_contribution(waveform: np.ndarray, sample_rate: int) -> dict[str, float]:
+    """Signal-level acoustic descriptors known to correlate with vocal
+    emotion (not a gradient attribution of the model itself, since the
+    frozen emotion2vec+ encoder has no meaningful per-feature decomposition)."""
+    import librosa
+
+    rms = librosa.feature.rms(y=waveform)[0]
+    zcr = librosa.feature.zero_crossing_rate(waveform)[0]
+    mfcc = librosa.feature.mfcc(y=waveform, sr=sample_rate, n_mfcc=13)
+    f0 = librosa.yin(waveform, fmin=60, fmax=500, sr=sample_rate)
+    f0 = f0[np.isfinite(f0)]
+
+    silence_floor = max(float(rms.mean()) * 0.35, 1e-4)
+    raw = {
+        "Pitch": float(f0.std()) if f0.size else 0.0,
+        "MFCC": float(np.abs(np.diff(mfcc, axis=1)).mean()) if mfcc.shape[1] > 1 else float(np.abs(mfcc).mean()),
+        "Energy": float(rms.mean()),
+        "Speech Rate": float(zcr.mean()),
+        "Pause Characteristics": float((rms < silence_floor).mean()),
+    }
+    total = sum(raw.values())
+    if total <= 0:
+        return {key: 1.0 / len(raw) for key in raw}
+    return {key: value / total for key, value in raw.items()}
 
 
 def _numerical_inference(values: dict[str, float]):
@@ -164,9 +231,35 @@ def _numerical_inference(values: dict[str, float]):
     scaled = numerical_scaler.transform(raw).astype(np.float32)
     tensor = torch.from_numpy(scaled).to(DEVICE)
     with torch.inference_mode():
-        embedding, logits, _ = numerical_model(tensor)
-        probabilities = logits.softmax(dim=1)[0].cpu().numpy()
-    return embedding, dict(zip(STATUS_CLASSES, map(float, probabilities))), probabilities
+        embedding, _, _ = numerical_model(tensor)
+    probabilities = synthetic_numerical["classifier"].predict_proba(raw)[0]
+    scores = np.asarray([
+        synthetic_numerical["regressors"][target].predict(raw)[0]
+        for target in synthetic_numerical["targets"]
+    ], dtype=np.float32)
+    global_importance = synthetic_numerical["classifier"].feature_importances_
+    ranked = sorted(zip(FEATURES, global_importance), key=lambda item: -float(item[1]))[:8]
+    total = sum(float(value) for _, value in ranked) or 1.0
+    importance = {name: float(value) / total for name, value in ranked}
+    return embedding, dict(zip(STATUS_CLASSES, map(float, probabilities))), probabilities, importance, scores
+
+
+def _numerical_saliency(tensor: torch.Tensor, target_class: int, top_k: int = 8) -> dict[str, float]:
+    """Input x gradient saliency w.r.t. the predicted class, in scaled-feature
+    space -- a standard, cheap local attribution that needs no extra deps.
+    Only the top-k indicators are returned/renormalized, matching the
+    "top contributing indicators" framing of the Explainability page."""
+    with torch.enable_grad():
+        numerical_model.zero_grad(set_to_none=True)
+        grad_input = tensor.clone().detach().requires_grad_(True)
+        _, logits, _ = numerical_model(grad_input)
+        logits[0, target_class].backward()
+    saliency = (grad_input.grad[0] * grad_input[0]).abs().detach().cpu().numpy()
+    ranked = sorted(zip(FEATURES, saliency), key=lambda item: -item[1])[:top_k]
+    total = sum(float(value) for _, value in ranked)
+    if total <= 0:
+        return {name: 1.0 / len(ranked) for name, _ in ranked}
+    return {name: float(value) / total for name, value in ranked}
 
 
 @app.get("/health")
@@ -177,7 +270,7 @@ def health():
         "selected_models": {
             "face": "ConvNeXt-Tiny real-only",
             "speech": "emotion2vec+ actor-independent",
-            "numerical": "numerical multi-task encoder",
+            "numerical": "synthetic-only 18-input XGBoost (neural fusion adapter)",
             "fusion": "gated all-modalities fusion",
         },
         "disclaimer": DISCLAIMER,
@@ -202,28 +295,45 @@ async def assess(
     modalities: dict = {}
     explainability: dict = {}
     evidence: list[np.ndarray] = []
+    numerical_probabilities: np.ndarray | None = None
+    numerical_scores: np.ndarray | None = None
 
     try:
         if face_file is not None:
-            face_embedding, probabilities, label, distribution = _face_inference(await face_file.read())
+            face_embedding, probabilities, label, distribution, face_tensor, face_image, pred_index = _face_inference(await face_file.read())
             available[0] = True
             modalities["face"] = {"emotion": label, "confidence": max(probabilities.values())}
             explainability["face"] = {"predicted_emotion": label, "confidence": max(probabilities.values())}
+            try:
+                cam = _face_gradcam(face_tensor, pred_index)
+                explainability["face"]["overlay_image_url"] = _face_overlay_data_uri(face_image, cam, FACE_SIZE)
+            except Exception:
+                pass
             evidence.append(distribution)
         if audio_file is not None:
-            speech_embedding, probabilities, label, attention, distribution = _speech_inference(await audio_file.read())
+            speech_embedding, probabilities, label, attention, distribution, contribution = _speech_inference(await audio_file.read())
             available[1] = True
             modalities["speech"] = {"emotion": label, "confidence": max(probabilities.values())}
-            explainability["speech"] = {"predicted_emotion": label, "confidence": max(probabilities.values()), "temporal_attention": attention}
+            explainability["speech"] = {
+                "predicted_emotion": label,
+                "confidence": max(probabilities.values()),
+                "temporal_attention": attention,
+                "feature_contribution": contribution,
+            }
             evidence.append(distribution)
         if numerical_json is not None:
             try:
                 numerical_values = json.loads(numerical_json)
             except json.JSONDecodeError as exc:
                 raise ValueError("Numerical input is not valid JSON.") from exc
-            numerical_embedding, probabilities, distribution = _numerical_inference(numerical_values)
+            numerical_embedding, probabilities, distribution, importance, numerical_scores = _numerical_inference(numerical_values)
+            numerical_probabilities = distribution
             available[2] = True
-            modalities["numerical"] = {"confidence": max(probabilities.values())}
+            modalities["numerical"] = {
+                "confidence": max(probabilities.values()),
+                "model": "Synthetic-only XGBoost, 18 frontend-compatible features",
+            }
+            explainability["numerical"] = {"feature_importance": importance}
             evidence.append(distribution)
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
@@ -239,6 +349,10 @@ async def assess(
         status_probabilities = status_logits.softmax(dim=1)[0].cpu().numpy()
         scores = score_values[0].cpu().numpy() * MAX_SCORES
         modality_weights = weights[0].cpu().numpy()
+
+    if available == [False, False, True] and numerical_probabilities is not None and numerical_scores is not None:
+        status_probabilities = numerical_probabilities
+        scores = numerical_scores
 
     agreement = _agreement(evidence)
     raw_confidence = _confidence(status_probabilities)

@@ -1,0 +1,14 @@
+{
+  "protocol": "Synthetic-only, 18 frontend-compatible features, seeded 70/15/15 split",
+  "accuracy": 0.7746666666666666,
+  "macro_f1": 0.7752928852084855,
+  "weighted_f1": 0.7752928852084856,
+  "macro_roc_auc": 0.9438850370370371,
+  "regression_r2": {
+    "Depression_Score": 0.6800473928451538,
+    "Anxiety_Score": 0.6630786657333374,
+    "Stress_Score": 0.6594890356063843
+  },
+  "test_samples": 3000,
+  "elapsed_seconds": 5.202946901321411
+}

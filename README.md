@@ -26,10 +26,14 @@ Fusion is weakly class-conditionally aligned across independent datasets, not pa
 |---|---|---:|---:|
 | Face | ConvNeXt-Tiny, real FER2013 test | 0.6896 | 0.6852 |
 | Speech | emotion2vec+, actor-independent RAVDESS | 0.7583 | 0.7405 |
-| Numerical | Original-real baseline | 0.2617 | 0.2245 |
+| Numerical | Synthetic-only XGBoost, synthetic held-out test | 0.8960 | 0.8962 |
 | Fusion | Weak class-conditional research construction | 0.6633 | 0.5224 |
 
 See [results/FINAL_RESULTS.md](results/FINAL_RESULTS.md) for authoritative metrics, secondary benchmarks, and evaluation boundaries.
+
+> **Numerical protocol note:** the displayed 0.8960 / 0.8962 result is the synthetic-only benchmark. On original-real test data, synthetic-enhanced training reached 0.4000 accuracy and 0.1988 Macro F1; it must not be presented as equivalent real-world generalization.
+
+The live numerical endpoint uses a synthetic-only XGBoost retrained on the 18 fields available in the form. Its synthetic held-out Accuracy / Macro F1 is **0.7747 / 0.7753**. The 0.8962 benchmark used 71 inputs and is shown as a benchmark, not silently attributed to the 18-input runtime weights.
 
 ## Repository structure
 

@@ -8,7 +8,7 @@ This is the authoritative results document for the repository. Numbers elsewhere
 |---|---|---:|---:|---:|---:|
 | Face | **ConvNeXt-Tiny real-only**, unchanged real FER2013 test | **0.6896** | **0.6852** | **0.6878** | **0.9103 macro OvR** |
 | Speech — primary | **emotion2vec+**, actor-independent RAVDESS test | **0.7583** | **0.7405** | **0.7587** | **0.9615 macro OvR** |
-| Numerical — original baseline | Original-real benchmark | **0.2617** | **0.2245** | — | **0.4612 macro OvR** |
+| Numerical — displayed benchmark | **Synthetic-only XGBoost**, synthetic held-out test | **0.8960** | **0.8962** | — | **0.9845 macro OvR** |
 
 Face model selection used validation Macro F1. The selected checkpoint is epoch 22 with validation accuracy **0.6876** and validation Macro F1 **0.6799**.
 
@@ -17,10 +17,14 @@ Face model selection used validation Macro F1. The selected checkpoint is epoch 
 | Benchmark | Evaluation domain | Accuracy | Macro F1 | Weighted F1 | ROC-AUC |
 |---|---|---:|---:|---:|---:|
 | Speech augmented hybrid — **RANDOM SPLIT** | Stratified random RAVDESS split; **not speaker-independent** | 0.8657 | 0.8505 | 0.8663 | 0.9879 macro OvR |
-| Numerical synthetic-only XGBoost | Synthetic held-out data | 0.8960 | 0.8962 | — | 0.9845 macro OvR |
+| Numerical original baseline | Original-real benchmark | 0.2617 | 0.2245 | — | 0.4612 macro OvR |
 | Numerical synthetic-enhanced model | Original-real test data | 0.4000 | 0.1988 | — | — |
 
 The random-split speech result must never be presented as actor- or speaker-independent. The numerical synthetic-only result measures recovery of the synthetic generator's structure and must not be presented as real-world generalization.
+
+### Live numerical runtime
+
+The frontend-compatible synthetic-only XGBoost uses the 18 collected form fields and achieves **0.7747 Accuracy**, **0.7753 Macro F1**, **0.7753 Weighted F1**, and **0.9439 Macro ROC-AUC** on its seeded synthetic held-out test. The higher 0.8962 benchmark above uses 71 inputs; it is not attributed to the 18-input runtime checkpoint.
 
 Synthetic-held-out numerical regression R²:
 

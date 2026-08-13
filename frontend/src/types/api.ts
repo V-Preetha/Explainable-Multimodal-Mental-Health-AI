@@ -37,6 +37,7 @@ export interface ModalityEmotionResult {
 
 export interface NumericalModalityResult {
   confidence: number;
+  model?: string;
 }
 
 export interface ModalityResults {

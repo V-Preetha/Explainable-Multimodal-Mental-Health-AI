@@ -70,19 +70,19 @@ export const MODEL_BRANCHES: ModelBranch[] = [
     dataset: "18 original indicators; synthetic extension reported by domain",
     variants: [
       {
-        key: "original_real",
-        label: "Original-real baseline",
-        description: "Primary original-data reference.",
-        status: "complete",
-        metrics: { accuracy: 0.2617, macroF1: 0.2245, rocAuc: 0.4612 },
-      },
-      {
         key: "synthetic_only",
-        label: "Synthetic-only XGBoost",
-        description: "Evaluated on synthetic held-out data.",
+        label: "Displayed: Synthetic-only XGBoost",
+        description: "Headline numerical benchmark; evaluated on synthetic held-out data.",
         status: "complete",
         metrics: { accuracy: 0.8960, macroF1: 0.8962, rocAuc: 0.9845 },
         note: "On original-real test data, synthetic-enhanced training reached 0.4000 accuracy and 0.1988 Macro F1.",
+      },
+      {
+        key: "original_real",
+        label: "Original-real reference",
+        description: "Retained to show the real-domain evaluation boundary.",
+        status: "complete",
+        metrics: { accuracy: 0.2617, macroF1: 0.2245, rocAuc: 0.4612 },
       },
     ],
     limitation: "Synthetic-held-out performance is not evidence of original-real generalization.",

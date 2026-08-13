@@ -38,6 +38,13 @@
     "macro_f1": 0.8962,
     "macro_roc_auc": 0.9845
   },
+  "numerical_synthetic_runtime_18": {
+    "protocol": "Synthetic-only XGBoost using the 18 frontend-compatible inputs; seeded synthetic held-out test",
+    "accuracy": 0.7746666667,
+    "macro_f1": 0.7752928852,
+    "weighted_f1": 0.7752928852,
+    "macro_roc_auc": 0.9438850370
+  },
   "numerical_synthetic_enhanced_real_test": {
     "protocol": "Synthetic-enhanced training evaluated on original-real test data",
     "accuracy": 0.4000,

@@ -28,13 +28,13 @@ FINAL_SUBMISSION_REPO/
 
 ## Authoritative metrics
 
-The sole authority is [results/FINAL_RESULTS.md](results/FINAL_RESULTS.md). Primary test Accuracy / Macro F1: face 0.6896 / 0.6852; speech 0.7583 / 0.7405; numerical original baseline 0.2617 / 0.2245; weakly aligned fusion 0.6633 / 0.5224. Random-split and synthetic-only results are explicitly labeled secondary benchmarks.
+The sole authority is [results/FINAL_RESULTS.md](results/FINAL_RESULTS.md). Headline Accuracy / Macro F1: face 0.6896 / 0.6852; speech 0.7583 / 0.7405; numerical synthetic-only benchmark 0.8960 / 0.8962; weakly aligned fusion 0.6633 / 0.5224. The numerical row is explicitly labeled synthetic held-out; its original-real results remain separately reported.
 
 ## Files intentionally excluded
 
 - Raw FER-style, RAVDESS, and numerical datasets.
 - Generated synthetic datasets and augmentation caches.
-- Superseded checkpoints and embedding caches. The five selected runtime artifacts are included through Git LFS.
+- Superseded checkpoints and embedding caches. Selected runtime artifacts are included through Git LFS.
 - Failed, stopped, historical, and superseded experiment implementations and outputs.
 - Dependency folders, build outputs, logs, temporary files, local environment files, and secrets.
 

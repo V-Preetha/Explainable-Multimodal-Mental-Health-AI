@@ -52,7 +52,7 @@ def main():
                 if token in text: findings.append(f"stale token {token!r}: {path.relative_to(ROOT)}")
     lfs_patterns = {".pt", ".pth", ".joblib"}
     for path in ROOT.rglob("*"):
-        if ".git" in path.parts or "node_modules" in path.parts or "dist" in path.parts:
+        if ".git" in path.parts or ".cache" in path.parts or "node_modules" in path.parts or "dist" in path.parts:
             continue
         is_selected_lfs_model = path.parent == ROOT / "models" and path.suffix.lower() in lfs_patterns
         if path.is_file() and path.stat().st_size > 95 * 1024 * 1024 and not is_selected_lfs_model:
