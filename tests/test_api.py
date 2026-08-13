@@ -29,3 +29,15 @@ def test_live_numerical_assessment_is_not_demo():
     payload = response.json()
     assert "isDemo" not in payload
     assert payload["modality_weights"]["numerical"] == 1.0
+
+
+def test_frontend_dev_origin_is_allowed():
+    response = TestClient(app).options(
+        "/api/assess",
+        headers={
+            "Origin": "http://127.0.0.1:5174",
+            "Access-Control-Request-Method": "POST",
+        },
+    )
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"] == "http://127.0.0.1:5174"
