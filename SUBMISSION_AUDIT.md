@@ -34,7 +34,7 @@ The sole authority is [results/FINAL_RESULTS.md](results/FINAL_RESULTS.md). Prim
 
 - Raw FER-style, RAVDESS, and numerical datasets.
 - Generated synthetic datasets and augmentation caches.
-- Checkpoints and embedding caches that are too large for an ordinary GitHub repository.
+- Superseded checkpoints and embedding caches. The five selected runtime artifacts are included through Git LFS.
 - Failed, stopped, historical, and superseded experiment implementations and outputs.
 - Dependency folders, build outputs, logs, temporary files, local environment files, and secrets.
 
@@ -48,12 +48,12 @@ The sole authority is [results/FINAL_RESULTS.md](results/FINAL_RESULTS.md). Prim
 - Secret scan: passed; no credential-like values found.
 - Broken-path audit: passed for required repository paths and local Markdown links.
 - Stale-result audit: passed; no failed-model references, obsolete metrics, training-status flags, or private absolute paths remain.
-- Large-file audit: passed; no file exceeds 95 MB.
+- Large-file audit: passed; the selected ConvNeXt file above 95 MB is tracked through Git LFS.
 
 ## Unresolved limitations
 
-- Large trained checkpoints are not committed; users must place them under `models/` or retrain.
-- The included API exposes health and authoritative metrics, not the complete uploaded-media inference workflow.
+- Selected trained checkpoints are committed through Git LFS; clones require Git LFS to materialize them.
+- The API now exposes the complete face/audio/numerical assessment endpoint used by the frontend.
 - Fusion is implemented and evaluated, but its inputs were weakly class-conditionally aligned across independent datasets—not participant-paired.
 - The frontend demo is not a clinical device, and the reported results do not establish deployment safety or population-level generalization.
 - The production JavaScript bundle is about 600 kB before gzip and would benefit from route-level code splitting.

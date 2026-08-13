@@ -41,7 +41,7 @@ scripts/                               User-facing run and audit commands
 results/{face,speech,numerical,fusion}/ Evidence and visualizations
 docs/                                  Dataset, model-card, and limitation notes
 tests/                                 Consistency and smoke tests
-models/                                Local checkpoints (gitignored)
+models/                                Selected checkpoints (Git LFS)
 ```
 
 ## Installation
@@ -50,23 +50,30 @@ models/                                Local checkpoints (gitignored)
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
+git lfs pull
 cd frontend
 pnpm install
 ```
 
 ## Running the demo
 
-The frontend defaults to clearly labeled demo mode and needs no checkpoint:
+Start the real model API from the repository root:
+
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn src.api.main:app --host 127.0.0.1 --port 8100
+```
+
+Then start the frontend in a second PowerShell window:
 
 ```powershell
 cd frontend
 pnpm dev
 ```
 
-For the metrics API:
+The frontend uses real inference by default. To intentionally show the fixed sample response, create `frontend/.env.local` containing:
 
-```powershell
-python -m uvicorn src.api.main:app --host 127.0.0.1 --port 8100
+```text
+VITE_DEMO_MODE=true
 ```
 
 ## Training each modality

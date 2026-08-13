@@ -9,9 +9,7 @@ frontend/dist/
 .cache/
 artifacts/
 artifacts/cache/
-models/*.pt
-models/*.pth
-models/*.joblib
+models/candidates/
 *.ckpt
 *.onnx
 data/

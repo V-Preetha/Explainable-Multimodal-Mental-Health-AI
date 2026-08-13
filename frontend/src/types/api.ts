@@ -65,6 +65,7 @@ export interface SpeechExplainability {
   speech_quality?: number;
   feature_contribution?: Record<string, number>;
   waveform?: number[];
+  temporal_attention?: number[];
 }
 
 export interface NumericalExplainability {

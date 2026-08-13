@@ -1,12 +1,13 @@
 # Model checkpoints
 
-Model binaries are intentionally not committed because the selected ConvNeXt checkpoint exceeds GitHub's normal 100 MB file limit and other checkpoints are generated artifacts.
+The selected runtime binaries are included through Git LFS because the ConvNeXt checkpoint exceeds GitHub's normal 100 MB file limit.
 
-Expected local files for full inference/training workflows:
+Included files:
 
 - `convnext_face_winner.pt`
-- `speech_actor_independent.pt`
-- `numerical_original.joblib` or a retrained equivalent
-- `multimodal_fusion_best.pt`
+- `speech_emotion2vec_strict.pt`
+- `numerical_multitask.pt`
+- `numerical_scaler.joblib`
+- `fusion_all_modalities.pt`
 
-Use the training commands in the root README to reproduce them. The frontend runs in clearly labeled demo mode without these files.
+Install Git LFS before cloning so these files are materialized instead of remaining pointer files. Use the training commands in the root README to reproduce them.

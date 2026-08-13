@@ -3,7 +3,7 @@ import { DEMO_ASSESSMENT_RESPONSE } from "@/lib/demoData";
 import { MODEL_BRANCHES, type ModelBranch } from "@/lib/metricsConfig";
 
 export const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL ?? "http://127.0.0.1:8100";
-export const DEMO_MODE: boolean = import.meta.env.VITE_DEMO_MODE !== "false";
+export const DEMO_MODE: boolean = import.meta.env.VITE_DEMO_MODE === "true";
 
 export class ApiRequestError extends Error {
   status?: number;
@@ -43,8 +43,8 @@ export async function runAssessment(payload: AssessmentRequestPayload): Promise<
     );
   }
   if (!response.ok) {
-    const detail = await response.text().catch(() => "");
-    throw new ApiRequestError(detail || `Assessment request failed (HTTP ${response.status}).`, response.status);
+    const payload = (await response.json().catch(() => null)) as { detail?: string } | null;
+    throw new ApiRequestError(payload?.detail || `Assessment request failed (HTTP ${response.status}).`, response.status);
   }
   const data = (await response.json()) as AssessmentResponse;
   return { ...data, isDemo: false };

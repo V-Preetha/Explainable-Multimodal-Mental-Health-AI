@@ -50,8 +50,12 @@ def main():
         if path not in EXCLUDED_EVIDENCE:
             for token in forbidden:
                 if token in text: findings.append(f"stale token {token!r}: {path.relative_to(ROOT)}")
+    lfs_patterns = {".pt", ".pth", ".joblib"}
     for path in ROOT.rglob("*"):
-        if path.is_file() and path.stat().st_size > 95 * 1024 * 1024:
+        if ".git" in path.parts or "node_modules" in path.parts or "dist" in path.parts:
+            continue
+        is_selected_lfs_model = path.parent == ROOT / "models" and path.suffix.lower() in lfs_patterns
+        if path.is_file() and path.stat().st_size > 95 * 1024 * 1024 and not is_selected_lfs_model:
             findings.append(f"GitHub-large file: {path.relative_to(ROOT)} ({path.stat().st_size} bytes)")
     link_pattern = re.compile(r"\[[^]]+\]\(([^)#]+)(?:#[^)]+)?\)")
     for path in ROOT.rglob("*.md"):
@@ -62,7 +66,7 @@ def main():
                 findings.append(f"broken local link: {path.relative_to(ROOT)} -> {target}")
     if findings:
         print("\n".join(findings)); return 1
-    print("Submission scan passed: no secrets, stale model names/metrics, private absolute paths, or >95 MB files.")
+    print("Submission scan passed: no secrets, stale model names/metrics, private absolute paths, or untracked large files.")
     return 0
 
 
