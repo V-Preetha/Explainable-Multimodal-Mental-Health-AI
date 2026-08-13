@@ -8,14 +8,14 @@ Aegis combines facial-expression, speech-emotion, and structured behavioral/phys
 
 ```mermaid
 flowchart LR
-  I["Face image"] --> F["ConvNeXt-Tiny\n256-D"]
-  A["Speech audio"] --> S["emotion2vec+\n256-D"]
-  N["18 numerical indicators"] --> E["Numerical encoder\n128-D"]
-  F --> G["Gated modality attention"]
-  S --> G
-  E --> G
-  G --> C["4-class status"]
-  G --> R["Depression / Anxiety / Stress"]
+  FACE[Face image] --> FACE_MODEL[ConvNeXt Tiny]
+  AUDIO[Speech audio] --> SPEECH_MODEL[emotion2vec Plus]
+  NUM[18 numerical indicators] --> NUM_MODEL[Numerical encoder]
+  FACE_MODEL --> FUSION[Gated modality attention]
+  SPEECH_MODEL --> FUSION
+  NUM_MODEL --> FUSION
+  FUSION --> STATUS[Four-class status]
+  FUSION --> SCORES[Depression, Anxiety, Stress]
 ```
 
 Fusion is weakly class-conditionally aligned across independent datasets, not participant-paired.
